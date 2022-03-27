@@ -1,9 +1,8 @@
 import org.apache.commons.lang3.RandomStringUtils;
 
 
-
 public class CreateNewLoginPass {
-    public String registerNewLoginPass(){
+    public String registerNewLoginPass() {
 
         // с помощью библиотеки RandomStringUtils генерируем логин
         // метод randomAlphabetic генерирует строку, состоящую только из букв, в качестве параметра передаём длину строки
@@ -20,7 +19,6 @@ public class CreateNewLoginPass {
         String registerRequestBody = "{\"email\":\"" + userLogin + "@yandex.ru" + "\","
                 + "\"password\":\"" + userPassword + "\","
                 + "\"name\":\"" + userName + "\"}";
-
 
 
         // возвращаем список

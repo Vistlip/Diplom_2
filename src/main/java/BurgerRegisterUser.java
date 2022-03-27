@@ -1,15 +1,15 @@
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 // импортируем библиотеку генерации строк
 import org.apache.commons.lang3.RandomStringUtils;
 // импортируем список
 import java.util.ArrayList;
-// дополнительный статический импорт нужен, чтобы использовать given(), get() и then()
-import static io.restassured.RestAssured.*;
+
 
 public class BurgerRegisterUser {
 
 
-    public ArrayList<String> registerNewUserAndReturnLoginPassword(){
+    public ArrayList<String> registerNewUserAndReturnLoginPassword() {
 
         // с помощью библиотеки RandomStringUtils генерируем логин
         // метод randomAlphabetic генерирует строку, состоящую только из букв, в качестве параметра передаём длину строки
@@ -28,7 +28,7 @@ public class BurgerRegisterUser {
                 + "\"name\":\"" + userName + "\"}";
 
         // отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response класса Response
-        Response response =  given()
+        Response response = RestAssured.given()
                 .header("Content-type", "application/json")
 
                 .and()

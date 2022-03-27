@@ -20,8 +20,7 @@ public class DeleteUser {
         if (responseDel.statusCode() == 202) {
             String an = "Учетная запись удалена";
             answer = an + " : " + responseDel.body().asString();
-        }
-        else {
+        } else {
             answer = responseDel.body().asString();
         }
         return answer;

@@ -11,7 +11,8 @@ public class UserData {
         this.user = user;
     }
 
-    public UserData() {}
+    public UserData() {
+    }
 
     public String getSuccess() {
         return success;
