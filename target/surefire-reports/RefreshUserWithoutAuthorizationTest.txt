@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: RefreshUserWithoutAuthorizationTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.219 s - in RefreshUserWithoutAuthorizationTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.231 s - in RefreshUserWithoutAuthorizationTest

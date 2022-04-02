@@ -17,6 +17,12 @@ public class RefreshUserWithAuthorizationTest {
         RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
     }
 
+    @After
+    public void deleteCreateUser() {
+        DeleteUser deleteUser = new DeleteUser();
+        deleteUser.deleteUser(jsonCreate);
+    }
+
     @Test
     @DisplayName("Проверка изменения имени пользователя")
     public void checkUserCanRename() {
@@ -24,13 +30,12 @@ public class RefreshUserWithAuthorizationTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = sendPostLoginUserAndGetBearer(jsonCreate);
         String json = "[ {\"op\": \"replace\", \"path\": \"/name\", \"value\": \"Viz\"}]";
         Response response = refreshUser(bearer, json);
-        String body = "<{email=" + login + "@yandex.ru, name=Viz>";
+        String body = "<{email=" + login + "@yandex.ru, name=Viz>}";
         printResponseBodyToConsole(response);
         response.then().assertThat().body("user", equalTo(body)).statusCode(200);
     }
@@ -43,13 +48,12 @@ public class RefreshUserWithAuthorizationTest {
         String login = Arr.get(0);
         String pass = Arr.get(1);
         String name = Arr.get(2);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = sendPostLoginUserAndGetBearer(jsonCreate);
         String json = "[ {\"op\": \"replace\", \"path\": \"/email\", \"value\": \"123456789@Gmail.com\"}]";
         Response response = refreshUser(bearer, json);
-        String body = "<{email=123456789@Gmail.com, name=" + name + ">";
+        String body = "<{email=123456789@Gmail.com, name=" + name + "}>";
         printResponseBodyToConsole(response);
         response.then().assertThat().body("user", equalTo(body)).statusCode(200);
     }
@@ -57,14 +61,8 @@ public class RefreshUserWithAuthorizationTest {
 
     @Step("Send POST request to api/auth/login")
     public String sendPostLoginUserAndGetBearer(String json) {
-        Response response = given()
-                .header("Content-type", "application/json")
-                .body(json)
-                .when()
-                .post("api/auth/login");
-        UserData userBearer = response.body().as(UserData.class);
-        String bearer = userBearer.getAccessToken();
-        return bearer;
+        BurgerRegisterUser burgerRegisterUser = new BurgerRegisterUser();
+        return burgerRegisterUser.LoginUserAndGetBearer(json);
     }
 
     @Step("Send PATCH request to api/auth/user")
@@ -82,10 +80,4 @@ public class RefreshUserWithAuthorizationTest {
         System.out.println(response.body().asString());
     }
 
-    @After
-    public void deleteCreateUser() {
-        DeleteUser deleteUser = new DeleteUser();
-        String answer = deleteUser.DeleteUser(jsonCreate);
-        System.out.println(answer);
-    }
 }

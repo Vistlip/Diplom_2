@@ -18,6 +18,12 @@ public class CreateOrderWithAuthorizationTest {
         RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
     }
 
+    @After
+    public void deleteCreateUser() {
+        DeleteUser deleteUser = new DeleteUser();
+        deleteUser.deleteUser(jsonCreate);
+    }
+
     @Test
     @DisplayName("Проверка создания заказа с ингридиентами")
     public void checkCreateOrderWithAuthorizationAndIngredients() {
@@ -25,8 +31,7 @@ public class CreateOrderWithAuthorizationTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = sendPostLoginUserAndGetBearer(jsonCreate);
         String json = "{\"ingredients\": [\"61c0c5a71d1f82001bdaaa6d\",\"61c0c5a71d1f82001bdaaa6f\"]}";
@@ -42,8 +47,7 @@ public class CreateOrderWithAuthorizationTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = sendPostLoginUserAndGetBearer(jsonCreate);
         String json = "";
@@ -59,8 +63,7 @@ public class CreateOrderWithAuthorizationTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = sendPostLoginUserAndGetBearer(jsonCreate);
         String json = "{\"ingredients\": [\"61c0c5a71d1f82001bdaa23a6d\",\"61c0c5a71d1f82001b123daaa6f\"]}";
@@ -72,14 +75,8 @@ public class CreateOrderWithAuthorizationTest {
 
     @Step("Send POST request to api/auth/login")
     public String sendPostLoginUserAndGetBearer(String json) {
-        Response response = given()
-                .header("Content-type", "application/json")
-                .body(json)
-                .when()
-                .post("api/auth/login");
-        UserData userBearer = response.body().as(UserData.class);
-        String bearer = userBearer.getAccessToken();
-        return bearer;
+        BurgerRegisterUser burgerRegisterUser = new BurgerRegisterUser();
+        return burgerRegisterUser.LoginUserAndGetBearer(json);
     }
 
     @Step("Send POST request to api/orders")
@@ -98,11 +95,5 @@ public class CreateOrderWithAuthorizationTest {
         System.out.println(response.body().asString());
     }
 
-    @After
-    public void deleteCreateUser() {
-        DeleteUser deleteUser = new DeleteUser();
-        String answer = deleteUser.DeleteUser(jsonCreate);
-        System.out.println(answer);
-    }
 }
 

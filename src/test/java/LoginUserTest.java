@@ -18,6 +18,12 @@ public class LoginUserTest {
         RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
     }
 
+    @After
+    public void deleteCreateUser() {
+        DeleteUser deleteUser = new DeleteUser();
+        deleteUser.deleteUser(jsonCreate);
+    }
+
     @Test
     @DisplayName("Проверка авторизации пользователя")
     public void checkUserCanLogIn() {
@@ -25,8 +31,7 @@ public class LoginUserTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         Response response = sendPostLoginUser(jsonCreate);
         printResponseBodyToConsole(response);
@@ -41,11 +46,9 @@ public class LoginUserTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
-        String jsonCreateIncorrectLogin = "{\"email\":\"" + "login333" + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
-        System.out.println(jsonCreate);
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
+        String jsonCreateIncorrectLogin = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", "111", pass);
+        System.out.println(jsonCreateIncorrectLogin);
         Response response = sendPostLoginUser(jsonCreateIncorrectLogin);
         printResponseBodyToConsole(response);
         response.then().assertThat().statusCode(401);
@@ -59,11 +62,9 @@ public class LoginUserTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
-        String jsonCreateIncorrectLogin = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + "pass" + "\"}";
-        System.out.println(jsonCreate);
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
+        String jsonCreateIncorrectLogin = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, "333");
+        System.out.println(jsonCreateIncorrectLogin);
         Response response = sendPostLoginUser(jsonCreateIncorrectLogin);
         printResponseBodyToConsole(response);
         response.then().assertThat().statusCode(401);
@@ -86,11 +87,4 @@ public class LoginUserTest {
         System.out.println(response.body().asString());
     }
 
-    @After
-    public void deleteCreateUser() {
-
-        DeleteUser deleteUser = new DeleteUser();
-        String answer = deleteUser.DeleteUser(jsonCreate);
-        System.out.println(answer);
-    }
 }

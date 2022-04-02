@@ -1,6 +1,7 @@
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+
 import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +19,12 @@ public class CheckGetListTest {
         RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
     }
 
+    @After
+    public void deleteCreateUser() {
+        DeleteUser deleteUser = new DeleteUser();
+        deleteUser.deleteUser(jsonCreate);
+    }
+
     @Test
     @DisplayName("Проверка получения списка заказов пользователя с авторизацией")
     public void checkGetListOrderWithAuthorization() {
@@ -25,8 +32,7 @@ public class CheckGetListTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = sendPostLoginUserAndGetBearer(jsonCreate);
         Response response = sendGetListOrder(bearer);
@@ -41,8 +47,7 @@ public class CheckGetListTest {
         ArrayList<String> Arr = burgerRegisterUser.registerNewUserAndReturnLoginPassword();
         String login = Arr.get(0);
         String pass = Arr.get(1);
-        jsonCreate = "{\"email\":\"" + login + "@yandex.ru" + "\","
-                + "\"password\":\"" + pass + "\"}";
+        jsonCreate = String.format("{\"email\":\"%s@yandex.ru\", \"password\":\"%s\"}", login, pass);
         System.out.println(jsonCreate);
         String bearer = "";
         Response response = sendGetListOrder(bearer);
@@ -52,20 +57,13 @@ public class CheckGetListTest {
 
     @Step("Send POST request to api/auth/login")
     public String sendPostLoginUserAndGetBearer(String json) {
-        Response response = given()
-                .header("Content-type", "application/json")
-                .body(json)
-                .when()
-                .post("api/auth/login");
-        UserData userBearer = response.body().as(UserData.class);
-        String bearer = userBearer.getAccessToken();
-        return bearer;
+        BurgerRegisterUser burgerRegisterUser = new BurgerRegisterUser();
+        return burgerRegisterUser.LoginUserAndGetBearer(json);
     }
 
     @Step("Send get request to api/orders")
     public Response sendGetListOrder(String bearer) {
         Response response = given()
-                .header("Content-type", "application/json")
                 .header("Authorization", bearer)
                 .when()
                 .get("api/orders");
@@ -77,10 +75,4 @@ public class CheckGetListTest {
         System.out.println(response.body().asString());
     }
 
-    @After
-    public void deleteCreateUser() {
-        DeleteUser deleteUser = new DeleteUser();
-        String answer = deleteUser.DeleteUser(jsonCreate);
-        System.out.println(answer);
-    }
 }

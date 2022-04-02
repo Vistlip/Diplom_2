@@ -1,4 +1,14 @@
 -------------------------------------------------------------------------------
 Test set: CreateOrderWithAuthorizationTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.643 s - in CreateOrderWithAuthorizationTest
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 2.244 s <<< FAILURE! - in CreateOrderWithAuthorizationTest
+checkCreateOrderWithAuthorizationAndIngredients(CreateOrderWithAuthorizationTest)  Time elapsed: 1.098 s  <<< ERROR!
+java.lang.IllegalArgumentException: Header value cannot be null
+	at CreateOrderWithAuthorizationTest.sendPostCreateOrder(CreateOrderWithAuthorizationTest.java:90)
+	at CreateOrderWithAuthorizationTest.checkCreateOrderWithAuthorizationAndIngredients(CreateOrderWithAuthorizationTest.java:38)
+
+checkCreateOrderWithAuthorizationAndWithoutIngredients(CreateOrderWithAuthorizationTest)  Time elapsed: 1.142 s  <<< ERROR!
+java.lang.IllegalArgumentException: Header value cannot be null
+	at CreateOrderWithAuthorizationTest.sendPostCreateOrder(CreateOrderWithAuthorizationTest.java:90)
+	at CreateOrderWithAuthorizationTest.checkCreateOrderWithAuthorizationAndWithoutIngredients(CreateOrderWithAuthorizationTest.java:54)
+
