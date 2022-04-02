@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Test set: RefreshUserWithAuthorizationTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.672 s <<< FAILURE! - in RefreshUserWithAuthorizationTest
+checkUserCanRename(RefreshUserWithAuthorizationTest)  Time elapsed: 1.361 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+JSON path user doesn't match.
+Expected: <{email=JFThsLHEBHAlLsE@yandex.ru, name=Viz>}
+  Actual: <{email=jfthslhebhallse@yandex.ru, name=ZcTLAKdlQY}>
+
+	at RefreshUserWithAuthorizationTest.checkUserCanRename(RefreshUserWithAuthorizationTest.java:40)
+
+checkUserCanChangeLogin(RefreshUserWithAuthorizationTest)  Time elapsed: 1.304 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+JSON path user doesn't match.
+Expected: <{email=123456789@Gmail.com, name=zPsHvDtApv}>
+  Actual: <{email=mmedjdyhofwhayo@yandex.ru, name=zPsHvDtApv}>
+
+	at RefreshUserWithAuthorizationTest.checkUserCanChangeLogin(RefreshUserWithAuthorizationTest.java:58)
+

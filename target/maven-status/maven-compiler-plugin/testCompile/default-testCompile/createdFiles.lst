@@ -1,0 +1,7 @@
+CreateOrderWithAuthorizationTest.class
+CheckGetListTest.class
+RefreshUserWithoutAuthorizationTest.class
+CreateUserTest.class
+CreateOrderWithoutAuthorizationTest.class
+RefreshUserWithAuthorizationTest.class
+LoginUserTest.class
